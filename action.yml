@@ -1,0 +1,25 @@
+name: "Execute Service Tasks"
+description: "Execute all tasks associated with a service, e.g., weak spots and experiments."
+inputs:
+  apiAccessToken:
+    description: "Access Token to be used when accessing the Steadybit API"
+    required: true
+  baseURL:
+    description: "Base URL of the Steadybit server"
+    required: false
+    default: "https://platform.steadybit.io"
+  file:
+    description: "Path relative to repository root to the service definition file"
+    required: false
+    default: ".steadybit.yml"
+runs:
+  using: 'docker'
+  image: 'docker://steadybit/cli:2'
+  env:
+    STEADYBIT_TOKEN: ${{ inputs.apiAccessToken }}
+    STEADYBIT_URL: ${{ inputs.baseURL }}
+  args:
+    - service
+    - exec
+    - -f
+    - ${{ inputs.file }}
